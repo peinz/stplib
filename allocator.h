@@ -14,3 +14,6 @@ void* alloc (Allocator allocator, size_t size) {
   return allocator.alloc(size, allocator.ctx);
 }
 
+void alc_clear(Allocator allocator) {
+  allocator.clear(allocator.ctx);
+}
