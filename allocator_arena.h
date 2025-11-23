@@ -103,12 +103,15 @@ void __arena_allocator_clear(void *ctx) {
   arena_clear(arena); 
 }
 
-Allocator arena_allocator_create(Arena* arena){
-  return (Allocator){
-    .alloc = __arena_allocator_alloc,
-    .free = __arena_allocator_free,
-    .clear = __arena_allocator_clear,
-    .ctx = arena,
-  };
-}
+#define arena_allocator_create(initial_capacity) ({ \
+  Arena* arena = alloca(sizeof(Arena)); \
+  __arena_initialize(arena, initial_capacity, MAX_SYSTEM_ALIGNMENT); \
+  Allocator alc = (Allocator){ \
+    .alloc = __arena_allocator_alloc, \
+    .free = __arena_allocator_free, \
+    .clear = __arena_allocator_clear, \
+    .ctx = arena, \
+  }; \
+  alc; \
+})
 
