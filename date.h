@@ -13,12 +13,29 @@ typedef struct Date {
   int day;
 } Date;
 
+int parse_int(const char* c, int len) {
+    int val = 0;
+    for (int i = 0; i < len; i++) {
+        val = val * 10 + (c[i] - '0');
+    }
+    return val;
+}
+
 Date date_from_ymd_str(String ymd_str) {
   assert(ymd_str.length == 10);
   return (Date){
-    .year = atoi(ymd_str.chars),
-    .month = atoi(ymd_str.chars + 5),
-    .day = atoi(ymd_str.chars + 8),
+    .year  = parse_int(ymd_str.chars + 0, 4),
+    .month = parse_int(ymd_str.chars + 5, 2),
+    .day   = parse_int(ymd_str.chars + 8, 2),
+  };
+}
+
+Date date_from_dmy_str(String dmy_str) {
+  assert(dmy_str.length == 10);
+  return (Date){
+    .year  = parse_int(dmy_str.chars + 6, 4),
+    .month = parse_int(dmy_str.chars + 3, 2),
+    .day   = parse_int(dmy_str.chars + 0, 2),
   };
 }
 
