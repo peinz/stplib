@@ -27,7 +27,7 @@ typedef struct {
 void cmd_append(Cmd *cmd, const char *item) {
   if (cmd->count >= cmd->capacity) {
     size_t new_capacity = cmd->capacity == 0 ? 8 : cmd->capacity * 2;
-    char **new_items = alloc(cmd->alc, new_capacity * sizeof(char*));
+    char **new_items = (char**) alloc(cmd->alc, new_capacity * sizeof(char*));
     if (cmd->items) {
       memcpy(new_items, cmd->items, cmd->count * sizeof(char*));
     }
@@ -36,7 +36,7 @@ void cmd_append(Cmd *cmd, const char *item) {
   }
 
   size_t item_len = strlen(item);
-  char *item_copy = alloc(cmd->alc, item_len + 1);
+  char *item_copy = (char*) alloc(cmd->alc, item_len + 1);
   memcpy(item_copy, item, item_len + 1);
   cmd->items[cmd->count++] = item_copy;
 }

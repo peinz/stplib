@@ -40,12 +40,12 @@ FileIterator* file_dir_iter_create(Error* err, Allocator alc, String dir_path) {
     return NULL;
   }
 
-  FileIterator* iter = alloc(alc, sizeof(FileIterator));
+  FileIterator* iter = (FileIterator*) alloc(alc, sizeof(FileIterator));
   iter->alc = alc;
   iter->dir_path = dir_path_absolute_str;
   iter->dir = dir;
 
-  FileEntry* cur_file_entry = alloc(alc, sizeof(FileEntry));
+  FileEntry* cur_file_entry = (FileEntry*) alloc(alc, sizeof(FileEntry));
   cur_file_entry->type = FILETYPE_UNINITIALIZED;
   cur_file_entry->name = (String){.chars = NULL, .length = 0};
   cur_file_entry->ext = (String){.chars = NULL, .length = 0};

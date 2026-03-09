@@ -21,7 +21,7 @@
 
 // Generic list operation macros
 #define ls_create(ListType, allocator) ({ \
-    ListType* list = alloc(allocator, sizeof(ListType)); \
+    ListType* list = (ListType*) alloc(allocator, sizeof(ListType)); \
     list->alc = allocator; \
     list->start = NULL; \
     list->end = NULL; \

@@ -50,7 +50,7 @@ void cmd_parser_add_command(
   const char* description
 ) {
   // log_v("Adding command: %s", cstr_dup(parser.alc, name));
-  CmdArgParserCommandEntryItem* entry = alloc(parser.alc, sizeof(CmdArgParserCommandEntryItem));
+  CmdArgParserCommandEntryItem* entry = (CmdArgParserCommandEntryItem*) alloc(parser.alc, sizeof(CmdArgParserCommandEntryItem));
   entry->name = cstr_dup(parser.alc, name);
   entry->description = cstr_dup(parser.alc, description);
   entry->cmd_parse_target = cmd_parse_target;
@@ -65,7 +65,7 @@ void cmd_parser_add_arg_string(
   const char* name,
   const char* description
 ){
-  CmdArgParserArgStringEntryItem* entry = alloc(parser.alc, sizeof(CmdArgParserArgStringEntryItem));
+  CmdArgParserArgStringEntryItem* entry = (CmdArgParserArgStringEntryItem*) alloc(parser.alc, sizeof(CmdArgParserArgStringEntryItem));
   entry->name = cstr_dup(parser.alc, name);
   entry->description = cstr_dup(parser.alc, description);
   entry->cmd_parse_target = cmd_parse_target;
@@ -78,7 +78,7 @@ void cmd_parser_add_arg_bool(
   const char* name,
   const char* description
 ){
-  CmdArgParserArgBoolEntryItem* entry = alloc(parser.alc, sizeof(CmdArgParserArgBoolEntryItem));
+  CmdArgParserArgBoolEntryItem* entry = (CmdArgParserArgBoolEntryItem*) alloc(parser.alc, sizeof(CmdArgParserArgBoolEntryItem));
   entry->name = cstr_dup(parser.alc, name);
   entry->description = cstr_dup(parser.alc, description);
   entry->cmd_parse_target = cmd_parse_target;
@@ -158,7 +158,7 @@ void cmd_parser_parse(Error* err, CmdArgParser parser, int argc, char** argv) {
       // If not a known command, treat it as a subcommand
       if (!matched) {
         log_v("treating as subcommand: %s", arg);
-        CmdArgParserSubCommandEntryItem* subcommand_entry = alloc(parser.alc, sizeof(CmdArgParserSubCommandEntryItem));
+        CmdArgParserSubCommandEntryItem* subcommand_entry = (CmdArgParserSubCommandEntryItem*) alloc(parser.alc, sizeof(CmdArgParserSubCommandEntryItem));
         subcommand_entry->value = str_from_cstr(parser.alc, arg);
         ls_push(parser.subcommands, subcommand_entry);
         matched = true;

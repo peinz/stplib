@@ -19,6 +19,8 @@ String* file_read(Error* err, Allocator alc, String path) {
   char* _path = str_tocstr(alc, path);
   FILE* f = fopen(_path, "rb");
   long long m = 0;
+  String* str = NULL;
+
   if (f == NULL)                 { err_set(err, 1, "Could not open file %s for reading", _path); goto defer; }
   if (fseek(f, 0, SEEK_END) < 0) { err_set(err, 2, "Could not seek to end of file %s", _path); goto defer; }
 #ifndef _WIN32
@@ -29,9 +31,9 @@ String* file_read(Error* err, Allocator alc, String path) {
   if (m < 0)                     { err_set(err, 3, "Could not get file size for %s", _path); goto defer; }
   if (fseek(f, 0, SEEK_SET) < 0) { err_set(err, 4, "Could not seek to beginning of file %s", _path); goto defer; }
 
-  String* str = alloc(alc, sizeof(String));
+  str = (String*) alloc(alc, sizeof(String));
   str->length = m;
-  str->chars = alloc(alc, m);
+  str->chars = (char*) alloc(alc, m);
 
   fread(str->chars, str->length, 1, f);
   if (ferror(f)) {
@@ -48,17 +50,18 @@ defer:
 }
 
 void file_write(Error* err, String path, String content) {
-  char* scratch = alloca(sizeof(BufferAllocator) + content.length);
+  char* scratch = (char*) alloca(sizeof(BufferAllocator) + content.length);
   Allocator alc_scratch = buffer_allocator(scratch, sizeof(BufferAllocator) + content.length);
   char* _path = str_tocstr(alc_scratch, path);
   const char *buf = NULL;
+  size_t size;
   FILE *f = fopen(_path, "wb");
   if (f == NULL) {
     err_set(err, 1, "Could not open file %s for writing", _path);
     goto defer;
   }
 
-  size_t size = content.length;
+  size = content.length;
   buf = (const char*)content.chars;
   while (size > 0) {
     size_t n = fwrite(buf, 1, size, f);

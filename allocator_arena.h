@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stddef.h>
+#include <stdint.h>
 #include <limits.h>
 
 #include "allocator.h"
@@ -104,7 +105,7 @@ void __arena_allocator_clear(void *ctx) {
 }
 
 #define arena_allocator_create(initial_capacity) ({ \
-  Arena* arena = alloca(sizeof(Arena)); \
+  Arena* arena = (Arena*) alloca(sizeof(Arena)); \
   __arena_initialize(arena, initial_capacity, MAX_SYSTEM_ALIGNMENT); \
   Allocator alc = (Allocator){ \
     .alloc = __arena_allocator_alloc, \

@@ -25,7 +25,7 @@ typedef struct Testrun {
 } Testrun;
 
 Testrun* tst_testrun_create(Allocator alc) {
-  Testrun* tr = alloc(alc, sizeof(Testrun));
+  Testrun* tr = (Testrun*) alloc(alc, sizeof(Testrun));
   tr->alc = alc;
   tr->results = ls_create(TestCaseResultList, alc);
   tr->total_tests = 0;
@@ -35,7 +35,7 @@ Testrun* tst_testrun_create(Allocator alc) {
 }
 
 void tst_add_result(Testrun* tr, bool success, const char* message) {
-  TestCaseResultItem* item = alloc(tr->alc, sizeof(TestCaseResultItem));
+  TestCaseResultItem* item = (TestCaseResultItem*) alloc(tr->alc, sizeof(TestCaseResultItem));
   item->success = success;
   item->test_name = tr->current_test_name ? cstr_dup(tr->alc, tr->current_test_name) : cstr_dup(tr->alc, "unknown");
   item->message = cstr_dup(tr->alc, message);

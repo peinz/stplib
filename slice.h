@@ -20,7 +20,7 @@ size_t slice_end(const Slice* slice) {
 }
 
 char* slice_to_string(Allocator alc, const Slice* slice) {
-  char* str = alloc(alc, (slice->length + 1) * sizeof(char));
+  char* str = (char*) alloc(alc, (slice->length + 1) * sizeof(char));
   memcpy(str, (char*)slice->target + slice->start, slice->length);
   str[slice->length] = '\0';
   return str;

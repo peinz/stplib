@@ -18,14 +18,14 @@ typedef struct StringBuilder {
 StringBuilder sb_create(Allocator alc) {
   return (StringBuilder) {
     .alc = alc,
-      .chars = alloc(alc, STRINGBUILDER_INITIAL_CAPACITY * sizeof(char)),
+      .chars = (char*) alloc(alc, STRINGBUILDER_INITIAL_CAPACITY * sizeof(char)),
       .count = 0,
       .capacity = STRINGBUILDER_INITIAL_CAPACITY,
   };
 }
 
 void sb_realloc(StringBuilder sb, size_t new_capacity) {
-  char* new_chars = alloc(sb.alc, new_capacity * sizeof(char));
+  char* new_chars = (char*) alloc(sb.alc, new_capacity * sizeof(char));
   memcpy(new_chars, sb.chars, sb.count);
   sb.capacity = new_capacity;
   sb.chars = new_chars;
@@ -41,7 +41,7 @@ void sb_increase_capacity(StringBuilder* sb, size_t missing_capacity) {
   size_t new_capacity = sb->capacity + capacity_to_add;
   log_w("sb_increase_capacity: new_capacity %zu", new_capacity);
 
-  char* new_chars = alloc(sb->alc, new_capacity * sizeof(char));
+  char* new_chars = (char*) alloc(sb->alc, new_capacity * sizeof(char));
   memcpy(new_chars, sb->chars, sb->count);
   sb->capacity = new_capacity;
   sb->chars = new_chars;
@@ -84,11 +84,11 @@ void sb_append(StringBuilder* sb, String new_part) {
     })
 
 String* sb_concat(Allocator alc, StringBuilder sb) {
-  char* str_chars = alloc(alc, sb.count);
+  char* str_chars = (char*) alloc(alc, sb.count);
   memcpy(str_chars, sb.chars, sb.count);
 
   // Create String using the buffer
-  String* str = alloc(alc, sizeof(String));
+  String* str = (String*) alloc(alc, sizeof(String));
   str->length = sb.count;
   str->chars = str_chars;
 
@@ -96,7 +96,7 @@ String* sb_concat(Allocator alc, StringBuilder sb) {
 }
 
 char* sb_concat_cstr(Allocator alc, StringBuilder sb) {
-  char* str_chars = alloc(alc, sb.count + 1);
+  char* str_chars = (char*) alloc(alc, sb.count + 1);
   memcpy(str_chars, sb.chars, sb.count);
   str_chars[sb.count] = '\0';
   return str_chars;

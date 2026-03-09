@@ -35,7 +35,7 @@
         (da)->capacity *= 2;                                                      \
       }                                                                             \
       void* old_items = (da)->items;                                                \
-      (da)->items = alloc((da)->alc, (da)->capacity * sizeof(*(da)->items));       \
+      (da)->items = (typeof((da)->items)) alloc((da)->alc, (da)->capacity * sizeof(*(da)->items));       \
       assert((da)->items != NULL && "Buy more RAM lol");                            \
       if (old_items && old_capacity > 0) {                                          \
         memcpy((da)->items, old_items, (da)->count * sizeof(*(da)->items));       \

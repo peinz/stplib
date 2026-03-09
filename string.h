@@ -23,7 +23,7 @@ void str_print(String str) {
 }
 
 char* str_tocstr(Allocator alc, String str) {
-  char* chars = alloc(alc, str.length + 1);
+  char* chars = (char*) alloc(alc, str.length + 1);
   memcpy(chars, str.chars, str.length);
   chars[str.length] = '\0';
   return chars;
@@ -47,7 +47,7 @@ char* cstr_format(Allocator alc, const char* format, ...) {
 
 char* cstr_dup(Allocator alc, const char* cstr) {
   size_t len = strlen(cstr);
-  char* chars = alloc(alc, len + 1);
+  char* chars = (char*) alloc(alc, len + 1);
   memcpy(chars, cstr, len);
   chars[len] = '\0';
   return chars;
@@ -55,9 +55,9 @@ char* cstr_dup(Allocator alc, const char* cstr) {
 
 String str_from_cstr(Allocator alc, const char* cstr) {
   int len = strlen(cstr);
-  char* chars = alloc(alc, len);
+  char* chars = (char*) alloc(alc, len);
   memcpy(chars, cstr, len);
-  return (String){.chars = chars, .length = len};
+  return (String){.chars = chars, .length = (size_t)len};
 }
 
 String str_wrap_cstr(char* cstr) {
