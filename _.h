@@ -6,12 +6,12 @@
 #include "allocator_arena.h"
 #include "allocator_buffer.h"
 #include "allocator_malloc.h"
+#include "error.h"
 #include "dynamic_array.h"
 #include "slice.h"
 #include "string.h"
 #include "stringbuilder.h"
 #include "generic_list.h"
-#include "error.h"
 #include "file.h"
 #include "file_iterator.h"
 #include "date.h"
@@ -19,3 +19,4 @@
 #include "cmdline_parser.h"
 #include "testing.h"
 
+#include "string_with_deps.h"
