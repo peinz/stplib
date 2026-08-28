@@ -121,3 +121,13 @@ Date date_add_days(Date date, int days) {
   };
 }
 
+// Returns day of week: 0=Sunday, 1=Monday, ..., 6=Saturday (C tm_wday convention)
+int date_weekday(Date date) {
+  struct tm tm = {0};
+  tm.tm_year = date.year - 1900;
+  tm.tm_mon = date.month - 1;
+  tm.tm_mday = date.day;
+  mktime(&tm);
+  return tm.tm_wday;
+}
+
