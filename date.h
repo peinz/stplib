@@ -108,3 +108,16 @@ Date date_subtract(Date date_a, Date date_b) {
   };
 }
 
+Date date_add_days(Date date, int days) {
+  struct tm tm = {0};
+  tm.tm_year = date.year - 1900;
+  tm.tm_mon = date.month - 1;
+  tm.tm_mday = date.day + days;
+  mktime(&tm); // normalizes overflow into month/year
+  return (Date){
+    .year = tm.tm_year + 1900,
+    .month = tm.tm_mon + 1,
+    .day = tm.tm_mday,
+  };
+}
+
